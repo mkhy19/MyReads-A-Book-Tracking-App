@@ -33,7 +33,12 @@ class BooksApp extends React.Component {
 
   render() {
     const { books } = this.state;
-
+    
+    const shelves = {
+      currentlyReading: ['Currently Reading', 'currentlyReading'],
+      wantToRead: ['Want to Read', 'wantToRead'],
+      read: ['Read', 'read']
+    }
     books.sort(sortBy('title'));
 
     return (
@@ -49,28 +54,17 @@ class BooksApp extends React.Component {
             <div className="open-search">
               <Link to="/search">Add a book</Link>
             </div>
-
+      
             <div className="list-books-content">
-              <BookShelf
-                shelfTitle="Currently Reading"
-                books={books}
-                shelf="currentlyReading"
-                updateShelf={this.updateShelf}
-              />
-              <BookShelf
-                shelfTitle="Want To Read"
-                books={books}
-                shelf="wantToRead"
-                updateShelf={this.updateShelf}
-              />
-              <BookShelf
-                shelfTitle="Read"
-                books={books}
-                shelf="read"
-                updateShelf={this.updateShelf}
-              />
+              { Object.keys(shelves).map((shelf) =>
+                <BookShelf key={shelf}
+                  shelfTitle={shelves[shelf][0]}
+                  books={ this.state.books }
+                  shelf={shelves[shelf][1]}
+                  onShelfChange={ () => { this.changeShelf() } }
+                />
+              )}
             </div>
-
           </div>
         )}/>
 
